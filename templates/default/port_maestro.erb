@@ -1,0 +1,24 @@
+# In-bound SSH
+-A FWR -p tcp --dport 22 -j ACCEPT
+
+# NTP
+-A FWR -p udp --sport 123 -j ACCEPT
+
+# Block zeroconf probes (mdns)
+-A FWR -p udp --dport 5353 -j DROP
+
+# Block Ident
+-A FWR -p tcp --dport 113 -j REJECT --reject-with icmp-port-unreachable
+
+# Storehouse
+-A FWR -p tcp --sport 9444 -j ACCEPT
+
+# KernelService
+-A FWR -p tcp --sport 9443 -j ACCEPT
+
+# In-bound PING
+-A FWR -p icmp --icmp-type 8 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+
+# Out-bound PING
+-A FWR -p icmp --icmp-type 0 -m state --state ESTABLISHED,RELATED -j ACCEPT 
+
